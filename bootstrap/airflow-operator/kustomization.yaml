@@ -1,0 +1,48 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+  - ./../hpe-imagepull-secrets
+namespace: $(AIRFLOW_OPERATOR_NAMESPACE)
+resources:
+  - airflowbase-crd.yaml
+  - airflowcluster-crd.yaml
+  - application-crd.yaml
+  - namespace.yaml
+  - cluster-role.yaml
+  - cluster-role-binding.yaml
+  - secret.yaml
+  - service.yaml
+  - stateful-set.yaml
+images:
+  - name: gcr.io/mapr-252711/airflow-operator
+    newName: $(AIRGAP_REGISTRY)gcr.io/mapr-252711/airflow-operator
+    newTag: $(AIRFLOW_OPERATOR_IMAGE_TAG)
+configMapGenerator:
+- name: airflow-operator-common-cm
+  env: environment.env
+generatorOptions:
+  disableNameSuffixHash: true
+vars:
+- name: AIRFLOW_OPERATOR_NAMESPACE
+  objref:
+    kind: ConfigMap
+    name: airflow-operator-common-cm
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.AIRFLOW_OPERATOR_NAMESPACE
+- name: AIRGAP_REGISTRY
+  objref:
+    kind: ConfigMap
+    name: airflow-operator-common-cm
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.AIRGAP_REGISTRY
+- name: AIRFLOW_OPERATOR_IMAGE_TAG
+  objref:
+    kind: ConfigMap
+    name: airflow-operator-common-cm
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.AIRFLOW_OPERATOR_IMAGE_TAG
+configurations:
+- configuration.yaml

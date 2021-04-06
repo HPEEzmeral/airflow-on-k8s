@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: $(AIRFLOW_BASE_NAMESPACE)
+bases:
+  - ./../../base
+resources:
+  - airflowbase.yaml
+configMapGenerator:
+- name: airflow-base-common-cm
+  behavior: merge
+  literals:
+    - "AIRFLOW_BASE_IS_POSTGRES=false"
+generatorOptions:
+  disableNameSuffixHash: true
+vars:
+- name: AIRFLOW_AIRGAP_REGISTRY
+  objref:
+    kind: ConfigMap
+    name: airflow-base-common-cm
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.AIRGAP_REGISTRY
+configurations:
+- configuration.yaml
