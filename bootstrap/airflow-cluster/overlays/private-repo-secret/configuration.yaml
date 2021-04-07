@@ -1,0 +1,5 @@
+varReference:
+- path: spec/dags/git/user
+  kind: AirflowCluster
+- path: spec/dags/git/cred/name
+  kind: AirflowCluster

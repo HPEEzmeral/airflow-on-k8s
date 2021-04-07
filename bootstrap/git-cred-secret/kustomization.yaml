@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+secretGenerator:
+- name: airflow-gitrepo-password
+  env: environment.env
+generatorOptions:
+  disableNameSuffixHash: true
