@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: $(AIRFLOW_CLUSTER_NAMESPACE)
+bases:
+  - ./../../../git-cred-secret
+  - ./../private-repo-secret
+configMapGenerator:
+- name: airflow-cluster-common-cm
+  env: environment.env
+  behavior: merge
+generatorOptions:
+  disableNameSuffixHash: true

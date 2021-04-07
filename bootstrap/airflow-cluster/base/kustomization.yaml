@@ -1,0 +1,76 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+  - ./../../hpe-imagepull-secrets
+namespace: $(AIRFLOW_CLUSTER_NAMESPACE)
+configMapGenerator:
+- name: airflow-cluster-common-cm
+  env: environment.env
+generatorOptions:
+  disableNameSuffixHash: true
+vars:
+  - name: AIRGAP_REGISTRY
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.AIRGAP_REGISTRY
+  - name: AIRFLOW_BASE_NAMESPACE
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.AIRFLOW_BASE_NAMESPACE
+  - name: AIRFLOW_CLUSTER_NAMESPACE
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.AIRFLOW_CLUSTER_NAMESPACE
+  - name: AIRFLOW_CLUSTER_IMAGE_TAG
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.AIRFLOW_CLUSTER_IMAGE_TAG
+  - name: AIRFLOW_GIT_REPO_URL
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.AIRFLOW_GIT_REPO_URL
+  - name: AIRFLOW_GIT_REPO_BRANCH
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.AIRFLOW_GIT_REPO_BRANCH
+  - name: AIRFLOW_GIT_REPO_SUBDIR
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.AIRFLOW_GIT_REPO_SUBDIR
+  - name: GIT_PROXY_HTTP
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.GIT_PROXY_HTTP
+  - name: GIT_PROXY_HTTPS
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.GIT_PROXY_HTTPS
+configurations:
+- configuration.yaml
