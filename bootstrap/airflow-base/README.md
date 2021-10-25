@@ -23,7 +23,7 @@ We can choose which database will be used by AirflowBase. _(Currently MySQL is n
     Example of command:
 
     ```bash
-    AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" kubectl apply -k private-airflow-operator/bootstrap/airflow-base/overlays/postgres
+    AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" kubectl apply -k airflow-on-k8s/bootstrap/airflow-base/overlays/postgres
     ```
 
 * AirflowBase with `MySQL` database 
@@ -31,7 +31,7 @@ We can choose which database will be used by AirflowBase. _(Currently MySQL is n
     Example of command:
 
     ```bash
-    AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" kubectl apply -k private-airflow-operator/bootstrap/airflow-base/overlays/mysql
+    AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" kubectl apply -k airflow-on-k8s/bootstrap/airflow-base/overlays/mysql
     ```
 
 ## Uninstall

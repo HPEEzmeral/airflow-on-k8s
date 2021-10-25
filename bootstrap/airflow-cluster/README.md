@@ -8,7 +8,7 @@
 
 * `AIRFLOW_CLUSTER_NAMESPACE` - name of namespace for AirflowCluster. This namespace should exists on clsuter;
 
-* `AIRFLOW_CLUSTER_IMAGE_TAG` - tag of Airflow docker image. Set new tag to update the operator. Use `ecp-5.3.0-rc3` as default value;
+* `AIRFLOW_CLUSTER_IMAGE_TAG` - tag of Airflow docker image. Set new tag to update the operator. Use `ecp-5.4.0-rc1` as default value;
 
 * `AIRFLOW_GIT_REPO_URL` - URL of git repository with DAGs. Use `https://github.com/akravacyber/spark-airflow.git` as default value;
 
@@ -52,10 +52,10 @@ If namespace `hpecp` desn't exists, create it with such commnad:
 kubectl create ns hpecp
 ```
 
-If secret `hpecp-ext-auth-secret` in namespace `hpecp` doesn't exists, execute such command (you should pass data about LDAP server in env variables, which are described in README.md in `private-airflow-operator/bootstrap/hpecp-ext-auth-secret` directory):
+If secret `hpecp-ext-auth-secret` in namespace `hpecp` doesn't exists, execute such command (you should pass data about LDAP server in env variables, which are described in README.md in `airflow-on-k8s/bootstrap/hpecp-ext-auth-secret` directory):
 
 ```bash
-auth_service_locations="127.0.0.1:383" base_dn="ou=users,dc=example,dc=com" bind_dn="cn=admin,dc=example,dc=com" bind_pwd="admin" user_attr="uid" kubectl apply -k private-airflow-operator/bootstrap/hpecp-ext-auth-secret
+auth_service_locations="127.0.0.1:383" base_dn="ou=users,dc=example,dc=com" bind_dn="cn=admin,dc=example,dc=com" bind_pwd="admin" user_attr="uid" kubectl apply -k airflow-on-k8s/bootstrap/hpecp-ext-auth-secret
 ```
 
 AirflowCluster installation depends on type of git repository:
@@ -63,7 +63,7 @@ AirflowCluster installation depends on type of git repository:
 * If git repository is public, use such command to install AirflowCluster:
 
     ```bash
-    AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" AIRFLOW_CLUSTER_NAMESPACE="default" AIRFLOW_CLUSTER_IMAGE_TAG="ecp-5.3.0-rc3" AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/spark-airflow.git" AIRFLOW_GIT_REPO_BRANCH="master" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" GIT_PROXY_HTTP="" GIT_PROXY_HTTPS="" kubectl apply -k private-airflow-operator/bootstrap/airflow-cluster/overlays/public-repo
+    AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" AIRFLOW_CLUSTER_NAMESPACE="default" AIRFLOW_CLUSTER_IMAGE_TAG="ecp-5.4.0-rc1" AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/spark-airflow.git" AIRFLOW_GIT_REPO_BRANCH="master" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" GIT_PROXY_HTTP="" GIT_PROXY_HTTPS="" kubectl apply -k airflow-on-k8s/bootstrap/airflow-cluster/overlays/public-repo
     ```
 
 * If git repository is private, we need to pass username in `AIRFLOW_GIT_REPO_USER` variable and password (or access token) in secret by key `password` within `AIRFLOW_CLUSTER_NAMESPACE` namespace.
@@ -71,13 +71,13 @@ AirflowCluster installation depends on type of git repository:
     * If the password (or access token) of git repository is already stored in secret by key `password` within `AIRFLOW_CLUSTER_NAMESPACE` namespace, let's additionally pass it name in `AIRFLOW_GIT_REPO_CRED_SECRET_NAME` variable (and of course we need to pass username in `AIRFLOW_GIT_REPO_USER` variable): 
 
         ```bash
-        AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" AIRFLOW_CLUSTER_NAMESPACE="default" AIRFLOW_CLUSTER_IMAGE_TAG="ecp-5.3.0-rc3" AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/private-spark-airflow.git" AIRFLOW_GIT_REPO_BRANCH="master" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" GIT_PROXY_HTTP="" GIT_PROXY_HTTPS="" AIRFLOW_GIT_REPO_USER="mapr" AIRFLOW_GIT_REPO_CRED_SECRET_NAME="secret-with-git-creds" kubectl apply -k private-airflow-operator/bootstrap/airflow-cluster/overlays/private-repo-secret
+        AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" AIRFLOW_CLUSTER_NAMESPACE="default" AIRFLOW_CLUSTER_IMAGE_TAG="ecp-5.4.0-rc1" AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/private-spark-airflow.git" AIRFLOW_GIT_REPO_BRANCH="master" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" GIT_PROXY_HTTP="" GIT_PROXY_HTTPS="" AIRFLOW_GIT_REPO_USER="mapr" AIRFLOW_GIT_REPO_CRED_SECRET_NAME="secret-with-git-creds" kubectl apply -k airflow-on-k8s/bootstrap/airflow-cluster/overlays/private-repo-secret
         ```
 
     * If the password (or access token) is not already stored in secret, we can pass it in `password` env variable, so appropriate secret will be generated:
 
         ```bash
-        AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" AIRFLOW_CLUSTER_NAMESPACE="default" AIRFLOW_CLUSTER_IMAGE_TAG="ecp-5.3.0-rc3" AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/private-spark-airflow.git" AIRFLOW_GIT_REPO_BRANCH="master" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" GIT_PROXY_HTTP="" GIT_PROXY_HTTPS="" AIRFLOW_GIT_REPO_USER="mapr" password="mapr" kubectl apply -k private-airflow-operator/bootstrap/airflow-cluster/overlays/private-repo-password
+        AIRGAP_REGISTRY="" AIRFLOW_BASE_NAMESPACE="airflow-base" AIRFLOW_CLUSTER_NAMESPACE="default" AIRFLOW_CLUSTER_IMAGE_TAG="ecp-5.4.0-rc1" AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/private-spark-airflow.git" AIRFLOW_GIT_REPO_BRANCH="master" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" GIT_PROXY_HTTP="" GIT_PROXY_HTTPS="" AIRFLOW_GIT_REPO_USER="mapr" password="mapr" kubectl apply -k airflow-on-k8s/bootstrap/airflow-cluster/overlays/private-repo-password
         ```
 
 ### Install with shell script
@@ -85,7 +85,7 @@ AirflowCluster installation depends on type of git repository:
 * We can install AirflowCluster with public git repository by executing such shell script:
 
     ```bash
-    AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/spark-airflow.git" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" /bin/sh private-airflow-operator/bootstrap/airflow-cluster/install.sh
+    AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/spark-airflow.git" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" /bin/sh airflow-on-k8s/bootstrap/airflow-cluster/install.sh
     ```
 
 * We can install AirflowCluster with private git repository in two ways:
@@ -93,13 +93,13 @@ AirflowCluster installation depends on type of git repository:
     * If the password (or access token) of git repository is already stored in secret by key `password` within `AIRFLOW_CLUSTER_NAMESPACE` namespace, let's additionally pass it name in `AIRFLOW_GIT_REPO_CRED_SECRET_NAME` variable (and of course we need to pass username in `AIRFLOW_GIT_REPO_USER` variable):
 
         ```bash
-        AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/private-spark-airflow.git" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" AIRFLOW_GIT_REPO_USER="mapr" AIRFLOW_GIT_REPO_CRED_SECRET_NAME="secret-with-git-creds" /bin/sh private-airflow-operator/bootstrap/airflow-cluster/install.sh
+        AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/private-spark-airflow.git" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" AIRFLOW_GIT_REPO_USER="mapr" AIRFLOW_GIT_REPO_CRED_SECRET_NAME="secret-with-git-creds" /bin/sh airflow-on-k8s/bootstrap/airflow-cluster/install.sh
         ```
 
     * If the password (or access token) is not already stored in secret, we can pass creds in prompt and script below will generate appropriate secret. So we need only to pass username in `AIRFLOW_GIT_REPO_USER` variable. Then we can execute such command and after that pass creds in prompt:
 
         ```bash
-        AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/private-spark-airflow.git" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" AIRFLOW_GIT_REPO_USER="mapr" /bin/sh private-airflow-operator/bootstrap/airflow-cluster/install.sh
+        AIRFLOW_GIT_REPO_URL="https://github.com/akravacyber/private-spark-airflow.git" AIRFLOW_GIT_REPO_SUBDIR="example_dags/" AIRFLOW_GIT_REPO_USER="mapr" /bin/sh airflow-on-k8s/bootstrap/airflow-cluster/install.sh
         ```
 
 We can customize installation with the same env variables, as above.
@@ -113,7 +113,7 @@ If needed env variables aren't provided, default values will be used.
 We can upgrade single instance of Airflow Clsuter by executing such shell script:
 
 ```bash
-AIRFLOW_CLUSTER_IMAGE_TAG="<place_here_new_tag>" AIRFLOW_CLUSTER_NAMESPACE="default" /bin/sh private-airflow-operator/bootstrap/airflow-cluster/upgrade.sh
+AIRFLOW_CLUSTER_IMAGE_TAG="<place_here_new_tag>" AIRFLOW_CLUSTER_NAMESPACE="default" /bin/sh airflow-on-k8s/bootstrap/airflow-cluster/upgrade.sh
 ```
 
 We need to pass new tag of Airflow Cluster in `AIRFLOW_CLUSTER_IMAGE_TAG` env variable. Also we need to pass name of namespace, where desired to upgrade Airflow Cluster is installed, in `AIRFLOW_CLUSTER_NAMESPACE` env variable. If these two env variables are not set, script will be failed with error.
@@ -137,7 +137,7 @@ If secret with creds for private git repository is no longer needed, we should d
 We can uninstall AirflowCluster by executing such shell script:
 
 ```bash
-/bin/sh private-airflow-operator/bootstrap/airflow-cluster/uninstall.sh
+/bin/sh airflow-on-k8s/bootstrap/airflow-cluster/uninstall.sh
 ```
 
 We need to set `AIRFLOW_CLUSTER_NAMESPACE` variable, if it value was different from default one during installation.

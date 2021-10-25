@@ -43,6 +43,8 @@ spec:
               fieldPath: metadata.namespace
         - name: SECRET_NAME
           value: airflowop-webhook-server-secret
+        - name: AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG
+          value: $(AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG)
         image: gcr.io/mapr-252711/airflow-operator:9b0a1c60
         imagePullPolicy: Always
         name: manager

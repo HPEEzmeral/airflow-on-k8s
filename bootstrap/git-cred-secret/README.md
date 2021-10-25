@@ -16,7 +16,7 @@ All variables should be set into env.
 In this command replace `default` with name of namespace, where secret should be installed:
 
 ```bash
-password="12345" kubectl apply -k private-airflow-operator/bootstrap/git-cred-secret -n default
+password="12345" kubectl apply -k airflow-on-k8s/bootstrap/git-cred-secret -n default
 ```
 
 ## Uninstall

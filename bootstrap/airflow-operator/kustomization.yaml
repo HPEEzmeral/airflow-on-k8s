@@ -58,5 +58,12 @@ vars:
     apiVersion: v1
   fieldref:
     fieldpath: data.AIRFLOW_OPERATOR_IMAGE_TAG
+- name: AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG
+  objref:
+    kind: ConfigMap
+    name: airflow-operator-common-cm
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG
 configurations:
 - configuration.yaml

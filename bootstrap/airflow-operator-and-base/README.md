@@ -10,9 +10,11 @@ Version of `kubectl` should be 1.14 or above.
 
 * `AIRFLOW_OPERATOR_NAMESPACE` - name of namespace for Airflow operator. Use `airflowop-system` as default vale;
 
-* `AIRFLOW_OPERATOR_IMAGE_TAG` - tag of Airflow operator docker image. Set new tag to update the operator. Use `ecp-5.3.0-rc3` as default vale.
+* `AIRFLOW_OPERATOR_IMAGE_TAG` - tag of Airflow operator docker image. Set new tag to update the operator. Use `ecp-5.4.0-rc1` as default vale.
 
 * `AIRFLOW_BASE_NAMESPACE` - name of namespace for AirflowBase. Use `airflow-base` as default vale.
+
+* `AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG` - tag of Airflow docker image. This tag is used, when operator creates new AirflowCluster from Source Control, which is created by HCP UI. Use `ecp-5.4.0-rc1` as default value. If specified value is empty it will be equal to `AIRFLOW_OPERATOR_IMAGE_TAG`;
 
 ## Install
 
@@ -25,7 +27,7 @@ We can choose which database will be used by AirflowBase. _(Currently MySQL is n
 We can install Airflow operator & AirflowBase by executing such shell script:
 
 ```bash
-/bin/sh private-airflow-operator/bootstrap/airflow-operator-and-base/install.sh
+/bin/sh airflow-on-k8s/bootstrap/airflow-operator-and-base/install.sh
 ```
 
 We can customize installation with the same env variables, as above.
@@ -39,7 +41,7 @@ If needed env variables aren't provided, default values will be used.
 We can upgrade Airflow operator & AirflowBase by executing such shell script:
 
 ```bash
-AIRFLOW_OPERATOR_IMAGE_TAG="<place_here_new_tag>" /bin/sh private-airflow-operator/bootstrap/airflow-operator-and-base/upgrade.sh
+AIRFLOW_OPERATOR_IMAGE_TAG="<place_here_new_tag>" /bin/sh airflow-on-k8s/bootstrap/airflow-operator-and-base/upgrade.sh
 ```
 
 We need to pass new tag of Airflow operator in `AIRFLOW_OPERATOR_IMAGE_TAG` env variable. If this env variable is not set, script will be failed with error. Also we can pass `AIRGAP_REGISTRY` env variable to override previous settings.
@@ -57,7 +59,7 @@ kubectl delete airflowbase af-base -n airflow-base && kubectl delete ns airflow-
 We can uninstall Airflow operator & AirflowBase by executing such shell script:
 
 ```bash
-/bin/sh private-airflow-operator/bootstrap/airflow-operator-and-base/uninstall.sh
+/bin/sh airflow-on-k8s/bootstrap/airflow-operator-and-base/uninstall.sh
 ```
 
 We need to set `AIRFLOW_OPERATOR_NAMESPACE` and `AIRFLOW_BASE_NAMESPACE` variables, if their values were different from default ones during installation.

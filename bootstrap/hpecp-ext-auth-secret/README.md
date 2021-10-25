@@ -37,7 +37,7 @@ All variables should be set into env.
 Example of command:
 
 ```bash
-auth_service_locations="127.0.0.1:383" base_dn="ou=users,dc=example,dc=com" bind_dn="cn=admin,dc=example,dc=com" bind_pwd="admin" user_attr="uid" kubectl apply -k private-airflow-operator/bootstrap/hpecp-ext-auth-secret
+auth_service_locations="127.0.0.1:383" base_dn="ou=users,dc=example,dc=com" bind_dn="cn=admin,dc=example,dc=com" bind_pwd="admin" user_attr="uid" kubectl apply -k airflow-on-k8s/bootstrap/hpecp-ext-auth-secret
 ```
 
 ## Uninstall

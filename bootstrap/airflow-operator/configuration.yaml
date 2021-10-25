@@ -13,3 +13,5 @@ varReference:
   kind: Service
 - path: metadata/namespace
   kind: ConfigMap
+- path: spec/template/spec/containers/env/value
+  kind: StatefulSet

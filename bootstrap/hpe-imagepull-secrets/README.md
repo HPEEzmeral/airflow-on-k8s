@@ -9,7 +9,7 @@
 In this command replace `default` with name of namespace, where secret should be installed:
 
 ```bash
-kubectl apply -k private-airflow-operator/bootstrap/hpe-imagepull-secrets -n default
+kubectl apply -k airflow-on-k8s/bootstrap/hpe-imagepull-secrets -n default
 ```
 
 ## Uninstall
