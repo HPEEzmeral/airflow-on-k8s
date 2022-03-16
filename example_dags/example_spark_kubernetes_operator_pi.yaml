@@ -45,7 +45,7 @@ spec:
       version: 3.1.2
     # Note: You do not need to specify a serviceAccount
     #       it will be auto-generated referencing the pre-existing "hpe-<namespace>"
-    #serviceAccount: hpe-sampletenant
+    serviceAccount: hpe-ak-tenant-role
   executor:
     cores: 1
     coreLimit: "1000m"
