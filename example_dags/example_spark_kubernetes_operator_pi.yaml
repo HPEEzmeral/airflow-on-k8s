@@ -27,14 +27,14 @@ spec:
     #       it will be auto-generated with the pattern "maprfs:///apps/spark/<namespace>"
     #spark.eventLog.dir: "maprfs:///apps/spark/sampletenant"
   type: Scala
-  sparkVersion: 2.4.7
+  sparkVersion: 3.1.2
   mode: cluster
-  image: gcr.io/mapr-252711/spark-2.4.7:202103081541C
+  image: gcr.io/mapr-252711/spark-3.1.2:202202141308P150
   imagePullPolicy: Always
   imagePullSecrets:
   - imagepull
   mainClass: org.apache.spark.examples.SparkPi
-  mainApplicationFile: "local:///opt/mapr/spark/spark-2.4.7/examples/jars/spark-examples_2.12-2.4.7.2-mapr-701.jar"
+  mainApplicationFile: "local:///opt/mapr/spark/spark-3.1.2/examples/jars/spark-examples_2.12-3.1.2.3-eep-800.jar"
   restartPolicy:
     type: Never
   driver:
@@ -42,7 +42,7 @@ spec:
     coreLimit: "1000m"
     memory: "512m"
     labels:
-      version: 2.4.7
+      version: 3.1.2
     # Note: You do not need to specify a serviceAccount
     #       it will be auto-generated referencing the pre-existing "hpe-<namespace>"
     #serviceAccount: hpe-sampletenant
@@ -52,4 +52,4 @@ spec:
     instances: 1
     memory: "512m"
     labels:
-      version: 2.4.7
+      version: 3.1.2
