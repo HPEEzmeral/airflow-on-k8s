@@ -25,6 +25,7 @@ Spark-on-k8s operator is required to be already installed on Kubernetes
 https://github.com/GoogleCloudPlatform/spark-on-k8s-operator
 """
 
+from os import path
 from datetime import timedelta, datetime
 
 # [START import_module]
@@ -65,7 +66,7 @@ namespace = '{{dag_run.conf.get("namespace", "sampletenant")}}'
 
 target_yaml_path = "/tmp/spark_pi.yaml"
 
-with open("example_spark_kubernetes_operator_pi.yaml") as f:
+with open(path.join(path.dirname(__file__), "example_spark_kubernetes_operator_pi.yaml")) as f:
     template = f.read()
     file = template.replace("$$$namespace$$$", namespace)
     with open(target_yaml_path) as yaml:
