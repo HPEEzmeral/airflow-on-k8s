@@ -69,7 +69,7 @@ target_yaml_path = "/tmp/spark_pi.yaml"
 with open(path.join(path.dirname(__file__), "example_spark_kubernetes_operator_pi.yaml")) as f:
     template = f.read()
     file = template.replace("$$$namespace$$$", namespace)
-    with open(target_yaml_path) as yaml:
+    with open(target_yaml_path, "w") as yaml:
         yaml.write(file)
 
 submit = SparkKubernetesOperator(
