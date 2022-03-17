@@ -42,7 +42,7 @@ default_args = {
 
 dag = DAG(
     'kubernetes_sample', default_args=default_args,
-    schedule_interval=timedelta(minutes=10), tags=['example'])
+    schedule_interval=timedelta(minutes=10), tags=['example', 'kubernetes', 'python', 'bash'])
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 

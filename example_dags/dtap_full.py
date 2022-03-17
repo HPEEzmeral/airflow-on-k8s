@@ -30,7 +30,7 @@ dag = DAG(
     dag_id='dtap_dag_with_bash',
     default_args=args,
     schedule_interval=timedelta(minutes=60),
-    tags=['example', 'dtap']
+    tags=['example', 'dtap', 'bash', 'hadoop']
 )
 
 def ls(path: str):

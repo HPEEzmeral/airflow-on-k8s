@@ -34,7 +34,7 @@ dag = DAG(
     default_args=args,
     schedule_interval='0 0 * * *',
     dagrun_timeout=timedelta(minutes=60),
-    tags=['hadoop', 'dtap']
+    tags=['example', 'dtap', 'bash', 'hadoop']
 )
 
 

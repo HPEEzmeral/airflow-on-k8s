@@ -59,7 +59,7 @@ dag = DAG(
     'spark_pi',
     default_args=default_args,
     schedule_interval=None,
-    tags=['example']
+    tags=['example', 'spark']
 )
 
 namespace = '{{dag_run.conf.get("namespace", "sampletenant")}}'
