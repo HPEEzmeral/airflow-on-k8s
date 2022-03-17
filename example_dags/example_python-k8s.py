@@ -23,7 +23,7 @@ import logging
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
-from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.dummy import DummyOperator
 from datetime import datetime, timedelta
 
 # log = logging.getLogger(__name__)

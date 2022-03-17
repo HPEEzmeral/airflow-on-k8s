@@ -61,13 +61,20 @@ dag = DAG(
     tags=['example']
 )
 
-# spark = open(
-#     "example_spark_kubernetes_operator_pi.yaml").read()
+namespace = '{{dag_run.conf.get("namespace", "sampletenant")}}'
+
+target_yaml_path = "/tmp/spark_pi.yaml"
+
+with open("example_spark_kubernetes_operator_pi.yaml") as f:
+    template = f.read()
+    file = template.replace("$$$namespace$$$", namespace)
+    with open(target_yaml_path) as yaml:
+        yaml.write(file)
 
 submit = SparkKubernetesOperator(
     task_id='spark_pi_submit',
-    namespace='{{dag_run.conf.get("namespace", "sampletenant")}}',
-    application_file="example_spark_kubernetes_operator_pi.yaml",
+    namespace=namespace,
+    application_file=target_yaml_path,
     kubernetes_conn_id="kubernetes_in_cluster",
     do_xcom_push=True,
     dag=dag,
@@ -77,7 +84,7 @@ submit = SparkKubernetesOperator(
 
 sensor = SparkKubernetesSensor(
     task_id='spark_pi_monitor',
-    namespace='{{dag_run.conf.get("namespace", "sampletenant")}}',
+    namespace=namespace,
     application_name="{{ task_instance.xcom_pull(task_ids='spark_pi_submit')['metadata']['name'] }}",
     kubernetes_conn_id="kubernetes_in_cluster",
     dag=dag,
