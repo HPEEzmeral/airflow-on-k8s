@@ -36,7 +36,7 @@ If you have got an airgap environment, push such images into your docker registr
 - `k8s.gcr.io/volume-nfs:0.8`
 - `pbweb/airflow-prometheus-exporter:latest`
 - `postgres:9.5`
-- `bluedata/hpecp-dtap:1.7.0`
+- `bluedata/hpecp-dtap:1.8.0`
 
 ## Manual installation
 
