@@ -10,11 +10,11 @@ Version of `kubectl` should be 1.14 or above.
 
 * `AIRFLOW_OPERATOR_NAMESPACE` - name of namespace for Airflow operator. Use `airflowop-system` as default vale;
 
-* `AIRFLOW_OPERATOR_IMAGE_TAG` - tag of Airflow operator docker image. Set new tag to update the operator. Use `ecp-5.4.0-rc2` as default vale.
+* `AIRFLOW_OPERATOR_IMAGE_TAG` - tag of Airflow operator docker image. Set new tag to update the operator. Use `ecp-5.4.1-rc1` as default vale.
 
 * `AIRFLOW_BASE_NAMESPACE` - name of namespace for AirflowBase. Use `airflow-base` as default vale.
 
-* `AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG` - tag of Airflow docker image. This tag is used, when operator creates new AirflowCluster from Source Control, which is created by HCP UI. Use `ecp-5.4.0-rc2` as default value. If specified value is empty it will be equal to `AIRFLOW_OPERATOR_IMAGE_TAG`;
+* `AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG` - tag of Airflow docker image. This tag is used, when operator creates new AirflowCluster from Source Control, which is created by HCP UI. Use `ecp-5.4.1-rc1` as default value. If specified value is empty it will be equal to `AIRFLOW_OPERATOR_IMAGE_TAG`;
 
 ## Install
 
