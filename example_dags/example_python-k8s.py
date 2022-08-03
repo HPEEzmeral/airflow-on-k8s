@@ -40,7 +40,7 @@ default_args = {
     'retries': 1,
     'retry_delay': timedelta(minutes=5)
 }
-
+# Provide limits for tenant namespace workload
 resources = k8s.V1ResourceRequirements(
     limits={
       "memory": "128Mi",
@@ -53,7 +53,7 @@ dag = DAG(
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-python_task = KubernetesPodOperator(namespace='airflow',
+python_task = KubernetesPodOperator(namespace='airflow', # Fill in with the name of tenant namespace
                                     image="python:3.6",
                                     cmds=["python", "-c"],
                                     arguments=["print('hello world')"],
@@ -65,7 +65,7 @@ python_task = KubernetesPodOperator(namespace='airflow',
                                     resources=resources
                                     )
 
-bash_task = KubernetesPodOperator(namespace='airflow',
+bash_task = KubernetesPodOperator(namespace='airflow', # Fill in with the name of tenant namespace
                                   image="ubuntu:16.04",
                                   cmds=["bash", "-cx"],
                                   arguments=["date"],
