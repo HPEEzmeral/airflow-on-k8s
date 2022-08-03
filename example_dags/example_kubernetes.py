@@ -46,7 +46,13 @@ with DAG(
             'value': 'value'
         }
     ]
-
+    resources = {
+      "limits": {
+         "memory": "128Mi",
+         "cpu": "500m"
+      }
+    }
+    
     k = KubernetesPodOperator(
         namespace="airflow",
         image="ubuntu:16.04",
@@ -57,5 +63,6 @@ with DAG(
         task_id="task",
         get_logs=True,
         is_delete_operator_pod=False,
-        tolerations=tolerations
+        tolerations=tolerations,
+        resources=resources
     )
