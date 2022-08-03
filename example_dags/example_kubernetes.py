@@ -47,13 +47,14 @@ with DAG(
             'value': 'value'
         }
     ]
+    # Provide limits for tenant namespace workload
     resources = k8s.V1ResourceRequirements(
          limits={
             "memory": "128Mi",
             "cpu": "500m"
          })
     k = KubernetesPodOperator(
-        namespace='airflow',
+        namespace='airflow', # Fill in with the name of tenant namespace
         image="ubuntu:16.04",
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
