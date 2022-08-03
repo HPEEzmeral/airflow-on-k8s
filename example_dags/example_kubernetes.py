@@ -21,6 +21,7 @@ This is an example dag for using the KubernetesPodOperator.
 import logging
 
 from airflow import DAG
+from kubernetes.client import models as k8s
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.utils.dates import days_ago
 
