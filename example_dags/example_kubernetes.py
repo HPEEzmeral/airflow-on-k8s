@@ -52,7 +52,7 @@ with DAG(
             "memory": "128Mi",
             "cpu": "500m"
          })
-    
+    print('{{dag_run}}')
     k = KubernetesPodOperator(
         namespace='{{dag_run.conf.get("namespace", "sampletenant")}}',
         image="ubuntu:16.04",
