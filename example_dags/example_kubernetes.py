@@ -21,6 +21,7 @@ This is an example dag for using the KubernetesPodOperator.
 import logging
 
 from airflow import DAG
+from kubernetes.client import models as k8s
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.utils.dates import days_ago
 
@@ -46,9 +47,14 @@ with DAG(
             'value': 'value'
         }
     ]
-
+    # Provide limits for tenant namespace workload
+    resources = k8s.V1ResourceRequirements(
+         limits={
+            "memory": "128Mi",
+            "cpu": "500m"
+         })
     k = KubernetesPodOperator(
-        namespace='default',
+        namespace='airflow', # Fill in with the name of tenant namespace
         image="ubuntu:16.04",
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
@@ -57,5 +63,6 @@ with DAG(
         task_id="task",
         get_logs=True,
         is_delete_operator_pod=False,
-        tolerations=tolerations
+        tolerations=tolerations,
+        resources=resources
     )
