@@ -21,6 +21,7 @@ This is an example dag for using the KubernetesPodOperator.
 import logging
 
 from airflow import DAG
+from kubernetes.client import models as k8s
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
 from airflow.operators.dummy import DummyOperator
@@ -40,13 +41,19 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
+resources = k8s.V1ResourceRequirements(
+    limits={
+      "memory": "128Mi",
+      "cpu": "500m"
+    })
+
 dag = DAG(
     'kubernetes_sample', default_args=default_args,
     schedule_interval=timedelta(minutes=10), tags=['example', 'kubernetes', 'python', 'bash'])
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-python_task = KubernetesPodOperator(namespace='default',
+python_task = KubernetesPodOperator(namespace='airflow',
                                     image="python:3.6",
                                     cmds=["python", "-c"],
                                     arguments=["print('hello world')"],
@@ -54,10 +61,11 @@ python_task = KubernetesPodOperator(namespace='default',
                                     name="passing-python",
                                     task_id="passing-task-python",
                                     get_logs=True,
-                                    dag=dag
+                                    dag=dag,
+                                    resources=resources
                                     )
 
-bash_task = KubernetesPodOperator(namespace='default',
+bash_task = KubernetesPodOperator(namespace='airflow',
                                   image="ubuntu:16.04",
                                   cmds=["bash", "-cx"],
                                   arguments=["date"],
@@ -66,7 +74,8 @@ bash_task = KubernetesPodOperator(namespace='default',
                                   # is_delete_operator_pod=False,
                                   task_id="passing-task-bash",
                                   get_logs=True,
-                                  dag=dag
+                                  dag=dag,
+                                  resources=resources
                                   )
 
 python_task.set_upstream(start)
