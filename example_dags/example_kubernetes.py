@@ -46,14 +46,11 @@ with DAG(
             'value': 'value'
         }
     ]
-    resources = {
-      "resources": {
-         "limits": {
+    resources = k8s.V1ResourceRequirements(
+         limits={
             "memory": "128Mi",
             "cpu": "500m"
-         }
-      }
-    }
+         })
     
     k = KubernetesPodOperator(
         namespace="airflow",
