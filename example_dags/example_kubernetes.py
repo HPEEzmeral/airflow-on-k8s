@@ -54,7 +54,7 @@ with DAG(
          })
     
     k = KubernetesPodOperator(
-        namespace="airflow",
+        namespace='{{dag_run.conf.get("namespace", "sampletenant")}}',
         image="ubuntu:16.04",
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
