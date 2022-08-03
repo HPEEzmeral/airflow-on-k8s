@@ -47,9 +47,11 @@ with DAG(
         }
     ]
     resources = {
-      "limits": {
-         "memory": "128Mi",
-         "cpu": "500m"
+      "resources": {
+         "limits": {
+            "memory": "128Mi",
+            "cpu": "500m"
+         }
       }
     }
     
