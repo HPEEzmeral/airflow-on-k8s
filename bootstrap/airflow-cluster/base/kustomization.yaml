@@ -86,5 +86,12 @@ vars:
       kind: ConfigMap
     fieldref:
       fieldpath: data.GIT_PROXY_HTTPS
+  - name: GIT_CERT_SECRET_NAME
+    objref:
+      name: airflow-cluster-common-cm
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.GIT_CERT_SECRET_NAME
 configurations:
 - configuration.yaml

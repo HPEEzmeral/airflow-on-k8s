@@ -13,7 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-AIRFLOW_IMAGE_TAG__CURRENT_VALUE="ecp-5.4.2-rc1"
+AIRFLOW_IMAGE_TAG__CURRENT_VALUE="develop-latest"
 
 if [ $AIRFLOW_UPGRADE_TO_CURRENT_VERSION = "true" ]; then
     echo -n "Upgrading to current version: ${AIRFLOW_IMAGE_TAG__CURRENT_VALUE}. Values of env variables "

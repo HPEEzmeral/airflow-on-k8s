@@ -54,7 +54,7 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - airflow.k8s.io
+  - airflow.hpe.com
   resources:
   - airflowbases
   verbs:
@@ -66,7 +66,7 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - airflow.k8s.io
+  - airflow.hpe.com
   resources:
   - airflowclusters
   verbs:

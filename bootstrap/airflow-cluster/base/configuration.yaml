@@ -1,6 +1,8 @@
 varReference:
 - path: metadata/namespace
   kind: AirflowCluster
+- path: metadata/annotations
+  kind: AirflowCluster
 - path: spec/ui/version
   kind: AirflowCluster
 - path: spec/scheduler/version
