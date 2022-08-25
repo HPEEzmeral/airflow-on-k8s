@@ -53,6 +53,9 @@ default_args = {
 }
 # [END default_args]
 
+with open('/var/run/secrets/kubernetes.io/serviceaccount/namespace', 'r') as file:
+    current_namespace = file.read()
+
 # [START instantiate_dag]
 
 dag = DAG(
@@ -64,7 +67,7 @@ dag = DAG(
 
 submit = SparkKubernetesOperator(
     task_id='spark_pi_submit',
-    namespace='{{dag_run.conf.get("namespace", "sampletenant")}}',
+    namespace=current_namespace,
     application_file="example_spark_kubernetes_operator_pi.yaml",
     kubernetes_conn_id="kubernetes_in_cluster",
     do_xcom_push=True,
@@ -75,7 +78,7 @@ submit = SparkKubernetesOperator(
 
 sensor = SparkKubernetesSensor(
     task_id='spark_pi_monitor',
-    namespace='{{dag_run.conf.get("namespace", "sampletenant")}}',
+    namespace=current_namespace,
     application_name="{{ task_instance.xcom_pull(task_ids='spark_pi_submit')['metadata']['name'] }}",
     kubernetes_conn_id="kubernetes_in_cluster",
     dag=dag,
