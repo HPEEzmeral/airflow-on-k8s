@@ -32,6 +32,9 @@ default_args = {
     'start_date': days_ago(2)
 }
 
+with open('/var/run/secrets/kubernetes.io/serviceaccount/namespace', 'r') as file:
+    current_namespace = file.read()
+
 with DAG(
     dag_id='example_kubernetes_operator',
     default_args=default_args,
@@ -48,7 +51,7 @@ with DAG(
     ]
 
     k = KubernetesPodOperator(
-        namespace='default',
+        namespace=current_namespace,
         image="ubuntu:16.04",
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],

@@ -40,13 +40,16 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
+with open('/var/run/secrets/kubernetes.io/serviceaccount/namespace', 'r') as file:
+    current_namespace = file.read()
+
 dag = DAG(
     'kubernetes_sample', default_args=default_args,
     schedule_interval=timedelta(minutes=10), tags=['example', 'kubernetes', 'python', 'bash'])
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-python_task = KubernetesPodOperator(namespace='default',
+python_task = KubernetesPodOperator(namespace=current_namespace,
                                     image="python:3.6",
                                     cmds=["python", "-c"],
                                     arguments=["print('hello world')"],
@@ -57,7 +60,7 @@ python_task = KubernetesPodOperator(namespace='default',
                                     dag=dag
                                     )
 
-bash_task = KubernetesPodOperator(namespace='default',
+bash_task = KubernetesPodOperator(namespace=current_namespace,
                                   image="ubuntu:16.04",
                                   cmds=["bash", "-cx"],
                                   arguments=["date"],
