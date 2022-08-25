@@ -1,7 +1,0 @@
-varReference:
-- path: metadata/namespace
-  kind: AirflowBase
-- path: metadata/name
-  kind: Namespace
-- path: metadata/namespace
-  kind: ConfigMap
