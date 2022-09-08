@@ -22,6 +22,6 @@ AIRFLOW_BASE_NAMESPACE="${AIRFLOW_BASE_NAMESPACE:-$AIRFLOW_BASE_NAMESPACE__DEFAU
 kubectl delete airflowbase af-base -n $AIRFLOW_BASE_NAMESPACE
 kubectl delete ns $AIRFLOW_BASE_NAMESPACE
 kubectl delete ns $AIRFLOW_OPERATOR_NAMESPACE
-kubectl delete crd airflowbases.airflow.k8s.io airflowclusters.airflow.k8s.io applications.app.k8s.io
+kubectl delete crd airflowbases.airflow.hpe.com airflowclusters.airflow.hpe.com applications.app.k8s.io
 kubectl delete clusterrolebinding airflowop-manager-rolebinding
 kubectl delete clusterrole airflowop-manager-role
