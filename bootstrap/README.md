@@ -30,13 +30,13 @@ Users can create an Airflow Cluster instance per tenant from git repository usin
 
 If you have got an airgap environment, push such images into your docker registry:
 
-- `gcr.io/mapr-252711/airflow:ecp-5.4.3-rc1`
-- `gcr.io/mapr-252711/airflow-operator:ecp-5.4.3-rc1`
+- `gcr.io/mapr-252711/airflow:ecp-5.5.0-rc1`
+- `gcr.io/mapr-252711/airflow-operator:ecp-5.5.0-rc1`
 - `k8s.gcr.io/git-sync/git-sync:v3.3.4`
 - `k8s.gcr.io/volume-nfs:0.8`
 - `pbweb/airflow-prometheus-exporter:latest`
 - `postgres:9.5`
-- `bluedata/hpecp-dtap:1.8.0`
+- `bluedata/hpecp-dtap:1.8.2`
 
 ## Manual installation
 

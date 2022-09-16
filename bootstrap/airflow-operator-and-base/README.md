@@ -10,13 +10,13 @@ Version of `kubectl` should be 1.14 or above.
 
 * `AIRFLOW_OPERATOR_NAMESPACE` - name of namespace for Airflow operator. Use `airflowop-system` as default vale;
 
-* `AIRFLOW_OPERATOR_IMAGE_TAG` - tag of Airflow operator docker image. Set new tag to update the operator. Use `ecp-5.4.3-rc1` as default vale;
+* `AIRFLOW_OPERATOR_IMAGE_TAG` - tag of Airflow operator docker image. Set new tag to update the operator. Use `ecp-5.5.0-rc1` as default vale;
 
 * `AIRFLOW_BASE_NAMESPACE` - name of namespace for AirflowBase. Use `airflow-base` as default vale;
 
-* `AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG` - tag of Airflow docker image. This tag is used, when operator creates new AirflowCluster from Source Control, which is created by HCP UI. Use `ecp-5.4.3-rc1` as default value. If specified value is empty it will be equal to `AIRFLOW_OPERATOR_IMAGE_TAG`;
+* `AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG` - tag of Airflow docker image. This tag is used, when operator creates new AirflowCluster from Source Control, which is created by HCP UI. Use `ecp-5.5.0-rc1` as default value. If specified value is empty it will be equal to `AIRFLOW_OPERATOR_IMAGE_TAG`;
 
-* `AIRFLOW_UPGRADE_TO_CURRENT_VERSION` - variable which is used only for upgrade scenario by upgrade.sh script. If value equals `true`, Airflow Operator and Base together with all Airflow Clusters will be upgraded to the tag `ecp-5.4.3-rc1`. Otherwise, the tag in `AIRFLOW_OPERATOR_IMAGE_TAG` environment variable will be used. The default value is `false`.
+* `AIRFLOW_UPGRADE_TO_CURRENT_VERSION` - variable which is used only for upgrade scenario by upgrade.sh script. If value equals `true`, Airflow Operator and Base together with all Airflow Clusters will be upgraded to the tag `ecp-5.5.0-rc1`. Otherwise, the tag in `AIRFLOW_OPERATOR_IMAGE_TAG` environment variable will be used. The default value is `false`.
 
 ## Install
 
@@ -48,7 +48,7 @@ AIRFLOW_OPERATOR_IMAGE_TAG="<place_here_new_tag>" /bin/sh airflow-on-k8s/bootstr
 
 We need to pass new tag of Airflow operator in `AIRFLOW_OPERATOR_IMAGE_TAG` env variable. If this env variable is not set and `AIRFLOW_UPGRADE_TO_CURRENT_VERSION` env variable doesn't equal `true`, script will be failed with error. Also we can pass `AIRGAP_REGISTRY` env variable to override previous settings.
 
-Instead of setting `AIRFLOW_OPERATOR_IMAGE_TAG` env variable, we can set `AIRFLOW_UPGRADE_TO_CURRENT_VERSION` with value `true`, which will upgrade Airflow operator, Airflow Base and all Airflow Clusters to the tag `ecp-5.4.3-rc1`.
+Instead of setting `AIRFLOW_OPERATOR_IMAGE_TAG` env variable, we can set `AIRFLOW_UPGRADE_TO_CURRENT_VERSION` with value `true`, which will upgrade Airflow operator, Airflow Base and all Airflow Clusters to the tag `ecp-5.5.0-rc1`.
 
 ## Uninstall
 
