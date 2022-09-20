@@ -62,7 +62,10 @@ dag = DAG(
     'spark_pi',
     default_args=default_args,
     schedule_interval=None,
-    tags=['example', 'spark']
+    tags=['example', 'spark'],
+    params={
+        'namespace': current_namespace,
+    }
 )
 
 submit = SparkKubernetesOperator(
