@@ -141,9 +141,10 @@ SCRIPTPATH=$(dirname ${0})
 
 printf "\nStarting upgrade of Airflow ...\n\n"
 
-echo "Stopping operator and all AirflowClusters ..."
-stop_sts airflowop-controller-manager $AIRFLOW_OPERATOR_NAMESPACE
-stop_all_airflow_clusters
+# sometimes after platform upgrade, pod database is not running properly, so we need to restart it
+echo "Restarting database ..."
+kubectl delete pod af-base-postgres-0 -n $AIRFLOW_BASE_NAMESPACE
+wait_pod_readiness af-base-postgres-0 $AIRFLOW_BASE_NAMESPACE
 echo
 
 echo "Dumping database ..."
@@ -152,11 +153,20 @@ kubectl cp $AIRFLOW_BASE_NAMESPACE/af-base-postgres-0:dump.sql /tmp/dump.sql
 kubectl exec -n $AIRFLOW_BASE_NAMESPACE af-base-postgres-0 -- bash -c "rm dump.sql"
 echo
 
+echo "Deleting AirflowBase namespace ..."
+kubectl delete ns $AIRFLOW_BASE_NAMESPACE
+echo
+
+echo "Stopping operator and all AirflowClusters ..."
+stop_sts airflowop-controller-manager $AIRFLOW_OPERATOR_NAMESPACE
+stop_all_airflow_clusters
+echo
+
 echo "Applying new Airflow Operator ..."
 kubectl apply -k ${SCRIPTPATH}/../airflow-operator
 echo
 
-echo "Starting and restaring operator ..."
+echo "Starting and restarting operator ..."
 start_sts airflowop-controller-manager $AIRFLOW_OPERATOR_NAMESPACE
 restart_sts airflowop-controller-manager $AIRFLOW_OPERATOR_NAMESPACE
 echo
@@ -165,8 +175,8 @@ echo "Waiting for Airflow Operator to be ready ..."
 wait_pod_readiness airflowop-controller-manager-0 $AIRFLOW_OPERATOR_NAMESPACE
 echo
 
-echo "Deleting AirflowBase namespace ..."
-kubectl delete ns $AIRFLOW_BASE_NAMESPACE
+echo "Deleting old AirflowBase CRD ..."
+kubectl delete crd airflowbases.airflow.k8s.io --ignore-not-found=true
 echo
 
 echo "Applying new AirflowBase ..."
@@ -207,16 +217,37 @@ echo
 echo "Upgrading and restarting all AirflowClusters ..."
 for airflow_cluster_cm_namespace in ${airflow_cluster_cm_namespaces}; do
     namespace=$(get_value_from_cm $airflow_cluster_cm_name $airflow_cluster_cm_namespace AIRFLOW_CLUSTER_NAMESPACE) || exit $?
-    AIRFLOW_CLUSTER_IMAGE_TAG="${AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG}" AIRFLOW_CLUSTER_NAMESPACE="${namespace}" ${SCRIPTPATH}/../airflow-cluster/upgrade.sh
-    kubectl create secret generic -n $namespace af-cluster-airflowui \
-        --from-literal=rootpassword="$AIRFLOW_DB_SQL_ROOTPASSWORD" --dry-run=client -o yaml | kubectl apply -f -
-    db_user=$(kubectl get airflowcluster -n $namespace af-cluster -o jsonpath='{.spec.scheduler.dbuser}')
     db_password=$(kubectl get secret -n $namespace af-cluster-airflowui -o jsonpath='{.data.password}' | base64 --decode)
+    fernet_key=$(kubectl get secret -n $namespace af-cluster-airflowui -o jsonpath='{.data.fernet_key}' | base64 --decode)
+    kubectl get airflowcluster.airflow.k8s.io -n $namespace af-cluster > /dev/null 2>&1
+    is_old_k8s_domain=$?
+    if [ $is_old_k8s_domain -eq 0 ]; then
+        prev_airflow_domain=airflow.k8s.io
+    else
+        prev_airflow_domain=airflow.hpe.com
+    fi
+    db_name=$(kubectl get airflowcluster.$prev_airflow_domain -n $namespace af-cluster -o jsonpath='{.spec.scheduler.database}')
+    db_user=$(kubectl get airflowcluster.$prev_airflow_domain -n $namespace af-cluster -o jsonpath='{.spec.scheduler.dbuser}')
+    if [ $is_old_k8s_domain -eq 0 ]; then
+        kubectl delete airflowcluster.airflow.k8s.io -n $namespace af-cluster --timeout=10s 2> /dev/null
+        kubectl patch airflowcluster.airflow.k8s.io -n $namespace af-cluster -p '{"metadata":{"finalizers":null}}' --type=merge
+    fi
+    kubectl delete sts,service,cm,secrets,sa,role,rolebinding,application.app.k8s.io -n $namespace -l custom-resource=v1alpha1.AirflowCluster
+    kubectl delete airflowcluster.airflow.hpe.com -n $namespace af-cluster --ignore-not-found=true
+    AIRFLOW_CLUSTER_IMAGE_TAG="${AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG}" AIRFLOW_CLUSTER_NAMESPACE="${namespace}" ${SCRIPTPATH}/../airflow-cluster/upgrade.sh
     kubectl exec -n $AIRFLOW_BASE_NAMESPACE af-base-postgres-0 -- bash -c "createdb -U postgres $db_user || true"
     kubectl exec -n $AIRFLOW_BASE_NAMESPACE af-base-postgres-0 -- bash -c "psql -U postgres -c \"ALTER USER $db_user WITH PASSWORD '$db_password';\""
+    kubectl patch airflowcluster.airflow.hpe.com -n $namespace af-cluster -p '{"spec":{"scheduler":{"database":"'${db_name}'","dbuser":"'${db_user}'"}}}' --type=merge
+    kubectl create secret generic -n $namespace af-cluster-airflowui --from-literal=password="$db_password" \
+        --from-literal=rootpassword="$AIRFLOW_DB_SQL_ROOTPASSWORD" --from-literal=fernet_key="$fernet_key" \
+        --dry-run=client -o yaml | kubectl apply -f -
     start_sts "af-cluster-airflowui af-cluster-scheduler" $namespace
     restart_sts "af-cluster-airflowui af-cluster-scheduler" $namespace
 done
+echo
+
+echo "Deleting old AirflowCluster CRD ..."
+kubectl delete crd airflowclusters.airflow.k8s.io --ignore-not-found=true
 echo
 
 echo "Airflow upgrade done"
