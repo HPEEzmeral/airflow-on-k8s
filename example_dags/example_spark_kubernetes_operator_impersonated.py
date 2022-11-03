@@ -54,13 +54,7 @@ default_args = {
 # [END default_args]
 
 with open('/var/run/secrets/kubernetes.io/serviceaccount/namespace', 'r') as file:
-    current_namespace_default = file.read()
-
-current_namespace = '{{dag_run.conf.get("namespace", "")}}'
-
-if not current_namespace:
-    current_namespace = current_namespace_default
-
+    current_namespace = file.read()
 
 # [START instantiate_dag]
 
@@ -68,10 +62,7 @@ dag = DAG(
     'spark_pi_impersonated',
     default_args=default_args,
     schedule_interval=None,
-    tags=['example', 'spark'],
-    params={
-        'namespace': current_namespace,
-    }
+    tags=['example', 'spark']
 )
 
 submit = SparkKubernetesOperator(
