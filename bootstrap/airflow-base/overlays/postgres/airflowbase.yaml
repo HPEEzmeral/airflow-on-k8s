@@ -35,13 +35,4 @@ spec:
       requests:
         cpu: 500m
         memory: 1000Mi
-  storage:
-    version: ""
-    resources:
-      limits:
-        cpu: 300m
-        memory: 1000Mi
-      requests:
-        cpu: 100m
-        memory: 500Mi
   airgapRegistry: $(AIRFLOW_AIRGAP_REGISTRY)

@@ -10,9 +10,9 @@ Version of `kubectl` should be 1.14 or above.
 
 * `AIRFLOW_OPERATOR_NAMESPACE` - name of namespace for Airflow operator. Use `airflowop-system` as default vale;
 
-* `AIRFLOW_OPERATOR_IMAGE_TAG` - tag of Airflow operator docker image. Set new tag to update the operator. Use `ecp-5.5.0-rc1` as default vale.
+* `AIRFLOW_OPERATOR_IMAGE_TAG` - tag of Airflow operator docker image. Set new tag to update the operator. Use `ecp-5.5.1-rc1` as default vale.
 
-* `AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG` - tag of Airflow docker image. This tag is used, when operator creates new AirflowCluster from Source Control, which is created by HCP UI. Use `ecp-5.5.0-rc1` as default value; 
+* `AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG` - tag of Airflow docker image. This tag is used, when operator creates new AirflowCluster from Source Control, which is created by HCP UI. Use `ecp-5.5.1-rc1` as default value; 
 
 ## Install
 
@@ -21,7 +21,7 @@ All variables should be set into env.
 Example of command:
 
 ```bash
-AIRGAP_REGISTRY="" AIRFLOW_OPERATOR_NAMESPACE="airflowop-system"  AIRFLOW_OPERATOR_IMAGE_TAG="ecp-5.5.0-rc1" AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG="ecp-5.5.0-rc1" kubectl apply -k airflow-on-k8s/bootstrap/airflow-operator
+AIRGAP_REGISTRY="" AIRFLOW_OPERATOR_NAMESPACE="airflowop-system"  AIRFLOW_OPERATOR_IMAGE_TAG="ecp-5.5.1-rc1" AIRFLOW_CLUSTER_DEFAULT_IMAGE_TAG="ecp-5.5.1-rc1" kubectl apply -k airflow-on-k8s/bootstrap/airflow-operator
 ```
 
 ## Uninstall
