@@ -29,7 +29,7 @@ spec:
   type: Scala
   sparkVersion: 3.5.0
   mode: cluster
-  image: gcr.io/mapr-252711/spark-3.5.0:202405130519R
+  image: '{{dag_run.conf["registry_url"]}}gcr.io/mapr-252711/spark-3.5.0:202405130519R'
   imagePullPolicy: Always
   imagePullSecrets:
   - imagepull
