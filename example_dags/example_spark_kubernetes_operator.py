@@ -25,6 +25,7 @@ Spark-on-k8s operator is required to be already installed on Kubernetes
 https://github.com/GoogleCloudPlatform/spark-on-k8s-operator
 """
 
+import os
 from os import path
 from datetime import timedelta, datetime
 
@@ -35,6 +36,7 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
 from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import SparkKubernetesSensor
 from airflow.utils.dates import days_ago
+from airflow.models.param import Param
 
 # [END import_module]
 
@@ -65,6 +67,11 @@ dag = DAG(
     tags=['example', 'spark'],
     params={
         'namespace': current_namespace,
+        'registry_url': Param(
+            os.environ.get("AIRGAP_REGISTRY"),
+            type="string",
+            description="Input your registry url. Trailing slash in the end is required",
+        ),
     }
 )
 
