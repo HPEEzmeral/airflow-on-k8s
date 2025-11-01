@@ -30,9 +30,9 @@ Users can create an Airflow Cluster instance per tenant from git repository usin
 
 If you have got an airgap environment, push such images into your docker registry:
 
-- `gcr.io/mapr-252711/airflow:ecp-5.6.5-rc1`
-- `gcr.io/mapr-252711/airflow-operator:ecp-5.6.5-rc1`
-- `registry.k8s.io/git-sync/git-sync:v4.2.3`
+- `gcr.io/mapr-252711/airflow:ecp-5.7.2-rc1`
+- `gcr.io/mapr-252711/airflow-operator:ecp-5.7.2-rc1`
+- `registry.k8s.io/git-sync/git-sync:v4.5.0`
 - `postgres:14.12`
 - `bluedata/hpecp-dtap:1.8.3`
 

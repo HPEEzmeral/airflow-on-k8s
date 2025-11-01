@@ -16,7 +16,7 @@
 SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" &> /dev/null && pwd)
 export PATH="$SCRIPT_DIR/../bin:$PATH"
 
-AIRFLOW_IMAGE_TAG__CURRENT_VALUE="ecp-5.6.5-rc1"
+AIRFLOW_IMAGE_TAG__CURRENT_VALUE="ecp-5.7.2-rc1"
 
 if [ $AIRFLOW_UPGRADE_TO_CURRENT_VERSION = "true" ]; then
     echo -n "Upgrading to current version: ${AIRFLOW_IMAGE_TAG__CURRENT_VALUE}. Values of env variables "

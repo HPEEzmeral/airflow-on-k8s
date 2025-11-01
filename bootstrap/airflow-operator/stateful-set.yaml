@@ -35,7 +35,7 @@ spec:
       - name: hpe-imagepull-secrets
       containers:
       - command:
-        - /root/manager
+        - /manager
         env:
         - name: POD_NAMESPACE
           valueFrom:
